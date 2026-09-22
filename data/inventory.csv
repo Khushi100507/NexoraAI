@@ -1,0 +1,41 @@
+product,stock,reorder_level,unit_cost,supplier
+Nexora Mouse,248,35,551.47,Nova Wholesale
+Nexora Keyboard,233,58,971.83,Vertex Distribution
+Pro Mouse,251,35,881.01,Vertex Distribution
+Mechanical Keyboard,46,35,2807.87,Vertex Distribution
+USB-C Hub,269,60,1284.17,Nova Wholesale
+Wireless Headset,175,64,2339.83,Nova Wholesale
+Studio Headphones,52,74,4705.07,Prime Components
+Bluetooth Speaker,278,69,3756.88,Nova Wholesale
+Webcam HD,101,61,1795.02,Vertex Distribution
+Webcam Pro,197,96,5336.43,Nova Wholesale
+Action Camera,148,97,11346.28,Vertex Distribution
+Smart Monitor 24,289,71,7739.91,Alpha Supply
+Smart Monitor 27,210,45,13347.68,Nova Wholesale
+4K Monitor,93,91,21661.85,Nova Wholesale
+Business Laptop 14,120,68,46966.85,Prime Components
+Business Laptop 15,70,92,45343.7,Alpha Supply
+Creator Laptop,255,50,73250.43,Prime Components
+Ultrabook,238,81,64736.48,Nova Wholesale
+Gaming Laptop,195,26,76774.45,Vertex Distribution
+Mini PC,117,74,31682.57,Vertex Distribution
+Tablet 10,226,55,17074.2,Alpha Supply
+Tablet Pro,197,68,28799.62,Nova Wholesale
+Smartphone A,212,32,12590.76,Alpha Supply
+Smartphone Pro,242,82,36383.18,Alpha Supply
+Smartwatch,159,64,6640.25,Vertex Distribution
+Fitness Band,151,61,2122.96,Alpha Supply
+Power Bank,229,54,1335.78,Vertex Distribution
+Fast Charger,319,63,1065.15,Vertex Distribution
+SSD 1TB,267,32,5315.41,Vertex Distribution
+SSD 2TB,106,41,8427.3,Prime Components
+External HDD,259,28,4403.72,Nova Wholesale
+NAS 2-Bay,329,86,23057.4,Vertex Distribution
+WiFi Router,57,80,3255.06,Nova Wholesale
+Mesh Router,93,34,6885.34,Prime Components
+Business Router,327,36,13672.41,Nova Wholesale
+Security Camera,256,71,3624.6,Alpha Supply
+Smart Lock,140,43,6478.41,Prime Components
+UPS 1KVA,149,54,5022.52,Nova Wholesale
+UPS 2KVA,55,65,10749.34,Vertex Distribution
+Surge Protector,176,88,862.31,Prime Components

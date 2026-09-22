@@ -1,0 +1,41 @@
+product_id,product,category,price
+P001,Nexora Mouse,Accessories,799
+P002,Nexora Keyboard,Accessories,1499
+P003,Pro Mouse,Accessories,1299
+P004,Mechanical Keyboard,Accessories,3999
+P005,USB-C Hub,Accessories,2199
+P006,Wireless Headset,Audio,3499
+P007,Studio Headphones,Audio,6999
+P008,Bluetooth Speaker,Audio,4999
+P009,Webcam HD,Cameras,2999
+P010,Webcam Pro,Cameras,7999
+P011,Action Camera,Cameras,14999
+P012,Smart Monitor 24,Displays,12999
+P013,Smart Monitor 27,Displays,18999
+P014,4K Monitor,Displays,32999
+P015,Business Laptop 14,Computers,64999
+P016,Business Laptop 15,Computers,74999
+P017,Creator Laptop,Computers,119999
+P018,Ultrabook,Computers,89999
+P019,Gaming Laptop,Computers,109999
+P020,Mini PC,Computers,42999
+P021,Tablet 10,Mobile,24999
+P022,Tablet Pro,Mobile,39999
+P023,Smartphone A,Mobile,19999
+P024,Smartphone Pro,Mobile,49999
+P025,Smartwatch,Wearables,9999
+P026,Fitness Band,Wearables,3499
+P027,Power Bank,Mobile,1999
+P028,Fast Charger,Mobile,1499
+P029,SSD 1TB,Storage,7999
+P030,SSD 2TB,Storage,13999
+P031,External HDD,Storage,6499
+P032,NAS 2-Bay,Storage,29999
+P033,WiFi Router,Networking,4499
+P034,Mesh Router,Networking,9999
+P035,Business Router,Networking,17999
+P036,Security Camera,Security,5999
+P037,Smart Lock,Security,8999
+P038,UPS 1KVA,Power,8499
+P039,UPS 2KVA,Power,15999
+P040,Surge Protector,Power,1299

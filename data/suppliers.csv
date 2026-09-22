@@ -1,0 +1,11 @@
+supplier_id,supplier,lead_time_days,reliability_pct,active_products
+1,Alpha Supply,16,91.3,10
+2,Vertex Distribution,14,96.9,4
+3,Nova Wholesale,9,96.7,3
+4,Prime Components,17,89.8,9
+5,Orbit Tech,16,91.5,14
+6,Delta Imports,18,91.4,6
+7,Summit Parts,3,96.2,7
+8,Apex Electronics,19,95.3,13
+9,Zenith Trade,5,88.2,12
+10,BluePeak Supply,20,88.8,10

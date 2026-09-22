@@ -1,0 +1,765 @@
+<!doctype html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1"
+    >
+
+    <title>NEXORAAI</title>
+
+    <link
+        rel="stylesheet"
+        href="/styles.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     TOP NAVIGATION
+===================================================== -->
+
+<header>
+
+    <div class="brand">
+
+        <b>NEXORAAI</b>
+
+        <small>
+            Business Intelligence & Autonomous Operations
+        </small>
+
+    </div>
+
+
+    <nav>
+
+        <button
+            class="nav-btn active"
+            onclick="showSection('command')"
+        >
+            Command Center
+        </button>
+
+        <button
+            class="nav-btn"
+            onclick="showSection('performance')"
+        >
+            Performance
+        </button>
+
+        <button
+            class="nav-btn"
+            onclick="showSection('intelligence')"
+        >
+            Intelligence
+        </button>
+
+        <button
+            class="nav-btn"
+            onclick="showSection('diagnosis')"
+        >
+            Diagnosis
+        </button>
+
+        <button
+            class="nav-btn"
+            onclick="showSection('ask')"
+        >
+            Ask NEXORAAI
+        </button>
+
+        <button
+            class="nav-btn"
+            onclick="showSection('operations')"
+        >
+            Operations
+        </button>
+
+        <button
+            class="nav-btn"
+            onclick="showSection('about')"
+        >
+            About
+        </button>
+
+    </nav>
+
+
+    <span class="live">
+        ● LIVE MONITORING
+    </span>
+
+</header>
+
+
+
+<main>
+
+
+<!-- =====================================================
+     COMMAND CENTER
+===================================================== -->
+
+<section
+    id="command"
+    class="page-section active-section"
+>
+
+
+    <section class="hero">
+
+        <div>
+
+            <h1>
+                Business Command Center
+            </h1>
+
+            <p>
+                NEXORAAI continuously understands your business,
+                detects important signals and turns them into
+                verified operational decisions.
+            </p>
+
+        </div>
+
+
+        <button
+            onclick="refreshAll()"
+        >
+            Refresh intelligence
+        </button>
+
+    </section>
+
+
+    <section
+        class="cards"
+        id="cards"
+    ></section>
+
+
+    <section class="panel">
+
+        <h2>
+            What is happening now?
+        </h2>
+
+        <div
+            id="command-summary"
+        >
+
+            <p class="muted">
+                NEXORAAI is analyzing the current business state...
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>
+            What needs attention?
+        </h2>
+
+        <div
+            id="command-actions"
+        >
+
+            <p class="muted">
+                Checking active business signals...
+            </p>
+
+        </div>
+
+    </section>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     PERFORMANCE
+===================================================== -->
+
+<section
+    id="performance"
+    class="page-section"
+>
+
+
+    <section class="hero">
+
+        <div>
+
+            <h1>
+                Performance
+            </h1>
+
+            <p>
+                Understand revenue, sales trends, products
+                and regional business performance across
+                different time periods.
+            </p>
+
+        </div>
+
+
+        <!-- PERIOD CONTROL -->
+
+        <div class="performance-control">
+
+            <label
+                for="performance-period"
+            >
+                Period
+            </label>
+
+            <select
+                id="performance-period"
+                onchange="changePerformancePeriod(this.value)"
+            >
+
+                <option value="this_month">
+                    This Month
+                </option>
+
+            </select>
+
+        </div>
+
+    </section>
+
+
+    <!-- SELECTED PERIOD -->
+
+    <section class="panel performance-period-header">
+
+        <div>
+
+            <span class="eyebrow">
+                SELECTED PERIOD
+            </span>
+
+            <h2 id="performance-period-label">
+                This Month
+            </h2>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         PERFORMANCE COMPARISON
+    ================================================== -->
+
+    <section class="panel">
+
+        <div>
+
+            <span class="eyebrow">
+                PERIOD COMPARISON
+            </span>
+
+            <h2>
+                Compare Business Performance
+            </h2>
+
+            <p class="muted">
+                Compare two business periods to understand
+                how revenue, orders, customers, units,
+                profit and expenses changed.
+            </p>
+
+        </div>
+
+
+        <div class="comparison-controls">
+
+
+            <!-- CURRENT PERIOD -->
+
+            <div class="performance-control">
+
+                <label
+                    for="comparison-current"
+                >
+                    Compare Current Period
+                </label>
+
+                <select
+                    id="comparison-current"
+                >
+
+                    <option value="this_month">
+                        This Month
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- VS -->
+
+            <div class="comparison-vs">
+
+                VS
+
+            </div>
+
+
+            <!-- PREVIOUS PERIOD -->
+
+            <div class="performance-control">
+
+                <label
+                    for="comparison-previous"
+                >
+                    Against
+                </label>
+
+                <select
+                    id="comparison-previous"
+                >
+
+                    <option value="last_month">
+                        Last Month
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- COMPARE BUTTON -->
+
+            <button
+                class="comparison-button"
+                onclick="loadComparison()"
+            >
+                Compare
+            </button>
+
+
+        </div>
+
+
+        <!-- COMPARISON RESULT -->
+
+        <div id="comparison-result">
+
+            <p class="muted">
+                Select two periods and click Compare.
+            </p>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         PERFORMANCE KPI CARDS
+    ================================================== -->
+
+    <section
+        class="cards"
+        id="performance-cards"
+    ></section>
+
+
+
+    <!-- =================================================
+         REVENUE + PRODUCTS
+    ================================================== -->
+
+    <section class="grid">
+
+
+        <!-- REVENUE CHART -->
+
+        <div class="panel">
+
+            <h3>
+                Revenue Performance
+            </h3>
+
+            <p class="muted">
+                Daily revenue during the selected period.
+            </p>
+
+            <div class="chart-container">
+
+                <canvas id="chart"></canvas>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- TOP PRODUCTS -->
+
+        <div class="panel">
+
+            <h3>
+                Top Products
+            </h3>
+
+            <p class="muted">
+                Highest-revenue products in the selected period.
+            </p>
+
+            <div id="products">
+
+                <p class="muted">
+                    Product performance will appear here.
+                </p>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         REGIONAL PERFORMANCE
+    ================================================== -->
+
+    <section class="panel">
+
+        <h3>
+            Regional Performance
+        </h3>
+
+        <p class="muted">
+            Revenue contribution by region during the selected period.
+        </p>
+
+        <div id="regions">
+
+            <p class="muted">
+                Regional performance will appear here.
+            </p>
+
+        </div>
+
+    </section>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     INTELLIGENCE
+===================================================== -->
+
+<section
+    id="intelligence"
+    class="page-section"
+>
+
+
+    <section class="hero">
+
+        <div>
+
+            <h1>
+                Business Intelligence
+            </h1>
+
+            <p>
+                NEXORAAI continuously detects trends,
+                risks, anomalies and opportunities.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h3>
+            Active Intelligence
+        </h3>
+
+        <div id="insights"></div>
+
+    </section>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     DIAGNOSIS
+===================================================== -->
+
+<section
+    id="diagnosis"
+    class="page-section"
+>
+
+
+    <section class="hero">
+
+        <div>
+
+            <h1>
+                Business Diagnosis
+            </h1>
+
+            <p>
+                Investigate business problems using evidence
+                from multiple business domains.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section class="panel">
+
+        <div id="diagnosis-content"></div>
+
+    </section>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     ASK NEXORAAI
+===================================================== -->
+
+<section
+    id="ask"
+    class="page-section"
+>
+
+
+    <section class="hero">
+
+        <div>
+
+            <h1>
+                Ask NEXORAAI
+            </h1>
+
+            <p>
+                Ask questions about your business in natural language.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section class="panel">
+
+
+        <div class="chat">
+
+            <input
+                id="question"
+                placeholder="Ask about sales, customers, inventory, orders, finance or marketing..."
+            >
+
+            <button
+                onclick="ask()"
+            >
+                Ask
+            </button>
+
+        </div>
+
+
+        <div id="answer"></div>
+
+
+    </section>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     OPERATIONS
+===================================================== -->
+
+<section
+    id="operations"
+    class="page-section"
+>
+
+
+    <section class="hero">
+
+        <div>
+
+            <h1>
+                Autonomous Operations
+            </h1>
+
+            <p>
+                Review, approve, execute and verify
+                operational actions generated by NEXORAAI.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h3>
+            Business Operations
+        </h3>
+
+        <div id="operations-content"></div>
+
+    </section>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     ABOUT
+===================================================== -->
+
+<section
+    id="about"
+    class="page-section"
+>
+
+
+    <section class="hero">
+
+        <div>
+
+            <h1>
+                About NEXORAAI
+            </h1>
+
+            <p>
+                AI-powered business intelligence and
+                autonomous operations platform.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section class="panel">
+
+
+        <h2>
+            What is NEXORAAI?
+        </h2>
+
+
+        <p>
+
+            NEXORAAI combines business intelligence,
+            AI-driven investigation and autonomous
+            operational workflows.
+
+        </p>
+
+
+        <p>
+
+            It monitors business data, identifies important
+            signals, investigates potential problems,
+            recommends actions and supports controlled
+            execution with human approval where required.
+
+        </p>
+
+
+        <h3>
+            Business Areas
+        </h3>
+
+
+        <div class="business-areas">
+
+            <span>Sales</span>
+
+            <span>Customers</span>
+
+            <span>Inventory</span>
+
+            <span>Orders</span>
+
+            <span>Finance</span>
+
+            <span>Marketing</span>
+
+            <span>Suppliers</span>
+
+            <span>Operations</span>
+
+        </div>
+
+
+    </section>
+
+
+</section>
+
+
+</main>
+
+
+
+<!-- =====================================================
+     CHART.JS
+===================================================== -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/chart.js"
+></script>
+
+
+
+<!-- =====================================================
+     NEXORAAI JAVASCRIPT
+===================================================== -->
+
+<script
+    src="/app.js"
+></script>
+
+
+</body>
+
+</html>
