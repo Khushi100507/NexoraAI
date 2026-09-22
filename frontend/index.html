@@ -24,6 +24,250 @@
 
 
 <!-- =====================================================
+     BUSINESS ONBOARDING
+===================================================== -->
+
+<section
+    id="onboarding"
+    class="onboarding-screen"
+>
+
+    <div class="onboarding-container">
+
+        <div class="onboarding-brand">
+            <span>NEXORAAI</span>
+
+            <small>
+                BUSINESS INTELLIGENCE & AUTONOMOUS OPERATIONS
+            </small>
+        </div>
+
+
+        <div class="onboarding-card">
+
+            <div class="onboarding-eyebrow">
+                BUSINESS DATA CONNECTION
+            </div>
+
+            <h1>
+                Connect your business
+            </h1>
+
+            <p class="onboarding-description">
+                Provide your company's business data and
+                NEXORAAI will prepare the data environment
+                for business intelligence and autonomous operations.
+            </p>
+
+
+            <!-- COMPANY -->
+
+            <div class="form-group">
+
+                <label for="company-name">
+                    Company name
+                </label>
+
+                <input
+                    id="company-name"
+                    type="text"
+                    placeholder="Enter your company name"
+                    autocomplete="organization"
+                >
+
+            </div>
+
+
+            <!-- FILE UPLOAD -->
+
+            <div class="form-group">
+
+                <label>
+                    Business data
+                </label>
+
+                <label
+                    for="business-files"
+                    class="upload-zone"
+                    id="upload-zone"
+                >
+
+                    <div class="upload-icon">
+                        ↑
+                    </div>
+
+                    <strong>
+                        Upload business data
+                    </strong>
+
+                    <span>
+                        CSV or Excel files · Multiple files supported
+                    </span>
+
+                    <small>
+                        Sales, customers, orders, inventory,
+                        finance, marketing and other business data
+                    </small>
+
+                </label>
+
+                <input
+                    id="business-files"
+                    type="file"
+                    accept=".csv,.xlsx,.xls"
+                    multiple
+                    hidden
+                >
+
+            </div>
+
+
+            <!-- SELECTED FILES -->
+
+            <div
+                id="selected-files"
+                class="selected-files"
+            ></div>
+
+
+            <!-- SUBMIT -->
+
+            <button
+                id="connect-button"
+                class="connect-button"
+                onclick="connectBusiness()"
+                disabled
+            >
+
+                Connect Business Data →
+
+            </button>
+
+
+            <p class="onboarding-note">
+                Your data is prepared for the NEXORAAI
+                business intelligence environment.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     ANALYSIS PROCESSING SCREEN
+===================================================== -->
+
+<section
+    id="processing-screen"
+    class="processing-screen hidden"
+>
+
+    <div class="processing-container">
+
+        <div class="processing-logo">
+            NEXORAAI
+        </div>
+
+        <div class="processing-eyebrow">
+            BUSINESS INTELLIGENCE INITIALIZATION
+        </div>
+
+        <h1>
+            Preparing your business intelligence environment
+        </h1>
+
+        <p
+            id="processing-company"
+            class="processing-description"
+        >
+            Preparing business data...
+        </p>
+
+
+        <div class="processing-panel">
+
+            <div class="processing-status-row">
+
+                <div>
+
+                    <span class="processing-dot"></span>
+
+                    <span id="processing-status">
+                        Receiving business data...
+                    </span>
+
+                </div>
+
+                <strong id="processing-percent">
+                    0%
+                </strong>
+
+            </div>
+
+
+            <div class="progress-track">
+
+                <div
+                    id="progress-bar"
+                    class="progress-bar"
+                ></div>
+
+            </div>
+
+
+            <div
+                id="processing-steps"
+                class="processing-steps"
+            ></div>
+
+        </div>
+
+
+        <div
+            id="processing-complete"
+            class="processing-complete"
+        >
+
+            <div class="complete-icon">
+                ✓
+            </div>
+
+            <div>
+
+                <strong>
+                    Business intelligence environment ready
+                </strong>
+
+                <p>
+                    NEXORAAI is ready to present your
+                    business intelligence workspace.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     MAIN APPLICATION
+===================================================== -->
+
+<div
+    id="application"
+    class="application-hidden"
+>
+
+
+<!-- =====================================================
      TOP NAVIGATION
 ===================================================== -->
 
@@ -114,7 +358,6 @@
     class="page-section active-section"
 >
 
-
     <section class="hero">
 
         <div>
@@ -153,9 +396,7 @@
             What is happening now?
         </h2>
 
-        <div
-            id="command-summary"
-        >
+        <div id="command-summary">
 
             <p class="muted">
                 NEXORAAI is analyzing the current business state...
@@ -172,9 +413,7 @@
             What needs attention?
         </h2>
 
-        <div
-            id="command-actions"
-        >
+        <div id="command-actions">
 
             <p class="muted">
                 Checking active business signals...
@@ -183,7 +422,6 @@
         </div>
 
     </section>
-
 
 </section>
 
@@ -197,7 +435,6 @@
     id="performance"
     class="page-section"
 >
-
 
     <section class="hero">
 
@@ -216,13 +453,9 @@
         </div>
 
 
-        <!-- PERIOD CONTROL -->
-
         <div class="performance-control">
 
-            <label
-                for="performance-period"
-            >
+            <label for="performance-period">
                 Period
             </label>
 
@@ -242,8 +475,6 @@
     </section>
 
 
-    <!-- SELECTED PERIOD -->
-
     <section class="panel performance-period-header">
 
         <div>
@@ -260,11 +491,6 @@
 
     </section>
 
-
-
-    <!-- =================================================
-         PERFORMANCE COMPARISON
-    ================================================== -->
 
     <section class="panel">
 
@@ -289,20 +515,13 @@
 
         <div class="comparison-controls">
 
-
-            <!-- CURRENT PERIOD -->
-
             <div class="performance-control">
 
-                <label
-                    for="comparison-current"
-                >
+                <label for="comparison-current">
                     Compare Current Period
                 </label>
 
-                <select
-                    id="comparison-current"
-                >
+                <select id="comparison-current">
 
                     <option value="this_month">
                         This Month
@@ -313,28 +532,18 @@
             </div>
 
 
-            <!-- VS -->
-
             <div class="comparison-vs">
-
                 VS
-
             </div>
 
 
-            <!-- PREVIOUS PERIOD -->
-
             <div class="performance-control">
 
-                <label
-                    for="comparison-previous"
-                >
+                <label for="comparison-previous">
                     Against
                 </label>
 
-                <select
-                    id="comparison-previous"
-                >
+                <select id="comparison-previous">
 
                     <option value="last_month">
                         Last Month
@@ -345,8 +554,6 @@
             </div>
 
 
-            <!-- COMPARE BUTTON -->
-
             <button
                 class="comparison-button"
                 onclick="loadComparison()"
@@ -354,11 +561,8 @@
                 Compare
             </button>
 
-
         </div>
 
-
-        <!-- COMPARISON RESULT -->
 
         <div id="comparison-result">
 
@@ -368,14 +572,8 @@
 
         </div>
 
-
     </section>
 
-
-
-    <!-- =================================================
-         PERFORMANCE KPI CARDS
-    ================================================== -->
 
     <section
         class="cards"
@@ -383,15 +581,7 @@
     ></section>
 
 
-
-    <!-- =================================================
-         REVENUE + PRODUCTS
-    ================================================== -->
-
     <section class="grid">
-
-
-        <!-- REVENUE CHART -->
 
         <div class="panel">
 
@@ -411,9 +601,6 @@
 
         </div>
 
-
-
-        <!-- TOP PRODUCTS -->
 
         <div class="panel">
 
@@ -435,14 +622,8 @@
 
         </div>
 
-
     </section>
 
-
-
-    <!-- =================================================
-         REGIONAL PERFORMANCE
-    ================================================== -->
 
     <section class="panel">
 
@@ -464,7 +645,6 @@
 
     </section>
 
-
 </section>
 
 
@@ -477,7 +657,6 @@
     id="intelligence"
     class="page-section"
 >
-
 
     <section class="hero">
 
@@ -507,7 +686,6 @@
 
     </section>
 
-
 </section>
 
 
@@ -520,7 +698,6 @@
     id="diagnosis"
     class="page-section"
 >
-
 
     <section class="hero">
 
@@ -546,7 +723,6 @@
 
     </section>
 
-
 </section>
 
 
@@ -559,7 +735,6 @@
     id="ask"
     class="page-section"
 >
-
 
     <section class="hero">
 
@@ -580,7 +755,6 @@
 
     <section class="panel">
 
-
         <div class="chat">
 
             <input
@@ -588,9 +762,7 @@
                 placeholder="Ask about sales, customers, inventory, orders, finance or marketing..."
             >
 
-            <button
-                onclick="ask()"
-            >
+            <button onclick="ask()">
                 Ask
             </button>
 
@@ -599,9 +771,7 @@
 
         <div id="answer"></div>
 
-
     </section>
-
 
 </section>
 
@@ -615,7 +785,6 @@
     id="operations"
     class="page-section"
 >
-
 
     <section class="hero">
 
@@ -645,7 +814,6 @@
 
     </section>
 
-
 </section>
 
 
@@ -658,7 +826,6 @@
     id="about"
     class="page-section"
 >
-
 
     <section class="hero">
 
@@ -680,64 +847,48 @@
 
     <section class="panel">
 
-
         <h2>
             What is NEXORAAI?
         </h2>
 
-
         <p>
-
             NEXORAAI combines business intelligence,
             AI-driven investigation and autonomous
             operational workflows.
-
         </p>
 
-
         <p>
-
             It monitors business data, identifies important
             signals, investigates potential problems,
             recommends actions and supports controlled
             execution with human approval where required.
-
         </p>
-
 
         <h3>
             Business Areas
         </h3>
 
-
         <div class="business-areas">
 
             <span>Sales</span>
-
             <span>Customers</span>
-
             <span>Inventory</span>
-
             <span>Orders</span>
-
             <span>Finance</span>
-
             <span>Marketing</span>
-
             <span>Suppliers</span>
-
             <span>Operations</span>
 
         </div>
 
-
     </section>
-
 
 </section>
 
 
 </main>
+
+</div>
 
 
 
@@ -748,7 +899,6 @@
 <script
     src="https://cdn.jsdelivr.net/npm/chart.js"
 ></script>
-
 
 
 <!-- =====================================================

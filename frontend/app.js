@@ -2,6 +2,535 @@ let chart;
 
 
 /* =========================================================
+   BUSINESS ONBOARDING
+========================================================= */
+
+let uploadedBusinessFiles = [];
+let selectedCompanyName = "";
+
+
+const onboardingSteps = [
+    "Business data received",
+    "Data structure checked",
+    "Business data prepared",
+    "Business intelligence modules initialized",
+    "NEXORAAI analysis environment ready"
+];
+
+
+function formatFileSize(bytes) {
+
+    if (!bytes)
+        return "0 KB";
+
+    const kb =
+        bytes / 1024;
+
+    if (kb < 1024)
+        return `${kb.toFixed(1)} KB`;
+
+    return `${(kb / 1024).toFixed(1)} MB`;
+
+}
+
+
+function renderSelectedFiles(files) {
+
+    const container =
+        document.querySelector(
+            "#selected-files"
+        );
+
+    if (!container)
+        return;
+
+
+    if (!files.length) {
+
+        container.innerHTML = "";
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        files.map(
+            file => `
+
+                <div class="file-item">
+
+                    <span class="file-item-name">
+                        ${escapeHTML(file.name)}
+                    </span>
+
+                    <span class="file-item-meta">
+                        ${formatFileSize(file.size)}
+                    </span>
+
+                </div>
+
+            `
+        ).join("");
+
+}
+
+
+function escapeHTML(value) {
+
+    return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+function updateConnectButton() {
+
+    const company =
+        document
+            .querySelector("#company-name")
+            ?.value
+            .trim();
+
+
+    const button =
+        document.querySelector(
+            "#connect-button"
+        );
+
+
+    if (!button)
+        return;
+
+
+    button.disabled =
+        !company ||
+        uploadedBusinessFiles.length === 0;
+
+}
+
+
+function handleBusinessFiles(fileList) {
+
+    uploadedBusinessFiles =
+        Array.from(fileList || []);
+
+
+    renderSelectedFiles(
+        uploadedBusinessFiles
+    );
+
+
+    updateConnectButton();
+
+}
+
+
+function setupOnboarding() {
+
+    const fileInput =
+        document.querySelector(
+            "#business-files"
+        );
+
+
+    const companyInput =
+        document.querySelector(
+            "#company-name"
+        );
+
+
+    const uploadZone =
+        document.querySelector(
+            "#upload-zone"
+        );
+
+
+    if (fileInput) {
+
+        fileInput.addEventListener(
+            "change",
+            event => {
+
+                handleBusinessFiles(
+                    event.target.files
+                );
+
+            }
+        );
+
+    }
+
+
+    if (companyInput) {
+
+        companyInput.addEventListener(
+            "input",
+            updateConnectButton
+        );
+
+    }
+
+
+    if (uploadZone) {
+
+        uploadZone.addEventListener(
+            "dragover",
+            event => {
+
+                event.preventDefault();
+
+                uploadZone.classList.add(
+                    "drag-active"
+                );
+
+            }
+        );
+
+
+        uploadZone.addEventListener(
+            "dragleave",
+            () => {
+
+                uploadZone.classList.remove(
+                    "drag-active"
+                );
+
+            }
+        );
+
+
+        uploadZone.addEventListener(
+            "drop",
+            event => {
+
+                event.preventDefault();
+
+                uploadZone.classList.remove(
+                    "drag-active"
+                );
+
+
+                const files =
+                    Array.from(
+                        event.dataTransfer.files || []
+                    );
+
+
+                if (!files.length)
+                    return;
+
+
+                uploadedBusinessFiles =
+                    files;
+
+
+                renderSelectedFiles(
+                    uploadedBusinessFiles
+                );
+
+
+                updateConnectButton();
+
+            }
+        );
+
+    }
+
+}
+
+
+function connectBusiness() {
+
+    const companyInput =
+        document.querySelector(
+            "#company-name"
+        );
+
+
+    selectedCompanyName =
+        companyInput
+            ?.value
+            .trim() ||
+        "Your Company";
+
+
+    if (
+        !selectedCompanyName ||
+        !uploadedBusinessFiles.length
+    ) {
+
+        return;
+
+    }
+
+
+    const onboarding =
+        document.querySelector(
+            "#onboarding"
+        );
+
+
+    const processing =
+        document.querySelector(
+            "#processing-screen"
+        );
+
+
+    if (onboarding)
+        onboarding.classList.add("hidden");
+
+
+    if (processing)
+        processing.classList.remove("hidden");
+
+
+    const companyLabel =
+        document.querySelector(
+            "#processing-company"
+        );
+
+
+    if (companyLabel) {
+
+        companyLabel.textContent =
+            `${selectedCompanyName} · ${uploadedBusinessFiles.length} business data file${uploadedBusinessFiles.length === 1 ? "" : "s"} received`;
+
+    }
+
+
+    runProcessingSequence();
+
+}
+
+
+function runProcessingSequence() {
+
+    const stepsContainer =
+        document.querySelector(
+            "#processing-steps"
+        );
+
+
+    const progress =
+        document.querySelector(
+            "#progress-bar"
+        );
+
+
+    const percent =
+        document.querySelector(
+            "#processing-percent"
+        );
+
+
+    const status =
+        document.querySelector(
+            "#processing-status"
+        );
+
+
+    const complete =
+        document.querySelector(
+            "#processing-complete"
+        );
+
+
+    if (!stepsContainer)
+        return;
+
+
+    stepsContainer.innerHTML =
+        onboardingSteps.map(
+            (step, index) => `
+
+                <div
+                    class="processing-step"
+                    id="processing-step-${index}"
+                >
+
+                    <span class="step-icon">
+                        ✓
+                    </span>
+
+                    <span>
+                        ${step}
+                    </span>
+
+                </div>
+
+            `
+        ).join("");
+
+
+    if (complete)
+        complete.classList.remove("show");
+
+
+    const total =
+        onboardingSteps.length;
+
+
+    let current =
+        0;
+
+
+    function processNextStep() {
+
+        if (current >= total) {
+
+            if (progress)
+                progress.style.width = "100%";
+
+
+            if (percent)
+                percent.textContent = "100%";
+
+
+            if (status)
+                status.textContent =
+                    "Business intelligence environment ready";
+
+
+            if (complete)
+                complete.classList.add("show");
+
+
+            setTimeout(
+                showApplication,
+                1200
+            );
+
+
+            return;
+
+        }
+
+
+        const step =
+            document.querySelector(
+                `#processing-step-${current}`
+            );
+
+
+        if (step) {
+
+            step.classList.add(
+                "active"
+            );
+
+        }
+
+
+        if (status) {
+
+            status.textContent =
+                onboardingSteps[current];
+
+        }
+
+
+        const percentage =
+            Math.round(
+                ((current + 1) / total) * 100
+            );
+
+
+        if (progress)
+            progress.style.width =
+                `${percentage}%`;
+
+
+        if (percent)
+            percent.textContent =
+                `${percentage}%`;
+
+
+        setTimeout(
+            () => {
+
+                if (step) {
+
+                    step.classList.remove(
+                        "active"
+                    );
+
+                    step.classList.add(
+                        "done"
+                    );
+
+
+                    const icon =
+                        step.querySelector(
+                            ".step-icon"
+                        );
+
+
+                    if (icon)
+                        icon.textContent = "✓";
+
+                }
+
+
+                current++;
+
+                processNextStep();
+
+            },
+            650
+        );
+
+    }
+
+
+    processNextStep();
+
+}
+
+
+function showApplication() {
+
+    const processing =
+        document.querySelector(
+            "#processing-screen"
+        );
+
+
+    const application =
+        document.querySelector(
+            "#application"
+        );
+
+
+    if (processing)
+        processing.classList.add(
+            "hidden"
+        );
+
+
+    if (application) {
+
+        application.classList.remove(
+            "application-hidden"
+        );
+
+        application.classList.add(
+            "application-visible"
+        );
+
+    }
+
+
+    initialize();
+
+}
+
+
+/* =========================================================
    BASIC HELPERS
 ========================================================= */
 
@@ -53,6 +582,7 @@ async function get(url) {
         throw Error(await response.text());
 
     return response.json();
+
 }
 
 
@@ -76,6 +606,7 @@ function showSection(sectionId) {
     const selected =
         document.getElementById(sectionId);
 
+
     if (selected) {
 
         selected.classList.add(
@@ -97,10 +628,12 @@ function showSection(sectionId) {
     const buttons =
         document.querySelectorAll(".nav-btn");
 
+
     buttons.forEach(button => {
 
         const onclick =
             button.getAttribute("onclick");
+
 
         if (
             onclick &&
@@ -134,7 +667,10 @@ let selectedPeriod = "this_month";
 async function loadPeriods() {
 
     const selector =
-        document.querySelector("#performance-period");
+        document.querySelector(
+            "#performance-period"
+        );
+
 
     if (!selector)
         return;
@@ -185,7 +721,9 @@ async function changePerformancePeriod(period) {
 }
 
 
-async function loadPerformance(period = "this_month") {
+async function loadPerformance(
+    period = "this_month"
+) {
 
     try {
 
@@ -249,6 +787,7 @@ function updatePerformanceTitle(period) {
             "#performance-period-label"
         );
 
+
     if (title) {
 
         title.textContent =
@@ -269,6 +808,7 @@ function performanceCards(data) {
         document.querySelector(
             "#performance-cards"
         );
+
 
     if (!element)
         return;
@@ -415,6 +955,7 @@ function cards(o) {
             "#cards"
         );
 
+
     if (!element)
         return;
 
@@ -489,6 +1030,7 @@ function products(data) {
             "#products"
         );
 
+
     if (!element)
         return;
 
@@ -535,6 +1077,7 @@ function graph(data) {
         document.querySelector(
             "#chart"
         );
+
 
     if (!canvas)
         return;
@@ -651,6 +1194,7 @@ function regions(data) {
             "#regions"
         );
 
+
     if (!element)
         return;
 
@@ -697,6 +1241,7 @@ function insights(data) {
         document.querySelector(
             "#insights"
         );
+
 
     if (!element)
         return;
@@ -760,28 +1305,339 @@ function diagnosis(data) {
             "#diagnosis-content"
         );
 
+
     if (!element)
         return;
 
 
-    const topRegion =
-        Object.entries(
-            data.top_regions || {}
-        )[0];
+    const overview =
+        data.overview || {};
 
+
+    const comparison =
+        data.comparison || {};
+
+
+    const inventoryEvidence =
+        data.inventory_evidence || {};
+
+
+    const orderEvidence =
+        data.order_evidence || {};
+
+
+    const customerEvidence =
+        data.customer_evidence || {};
+
+
+    const marketingEvidence =
+        data.marketing_evidence || {};
+
+
+    const financeEvidence =
+        data.finance_evidence || {};
+
+
+    const driverSummary =
+        comparison.driver_summary || {};
+
+
+    const regionalMovement =
+        comparison.regional_movement || [];
+
+
+    const productMovement =
+        comparison.product_movement || [];
+
+
+    const lowStockItems =
+        inventoryEvidence.low_stock_items || [];
+
+
+    const inventoryIntelligence =
+        inventoryEvidence.intelligence || [];
+
+
+    /*
+     * BUSINESS DRIVER
+     *
+     * This is the actual field returned
+     * by /api/diagnosis.
+     */
+
+    const businessDriver =
+        comparison.business_driver ||
+        "NEXORAAI has identified business activity for the selected period.";
+
+
+    /*
+     * LEADING REGION
+     */
+
+    const topRegion =
+        driverSummary.largest_region
+            ? {
+                name:
+                    driverSummary.largest_region,
+
+                change:
+                    driverSummary.largest_region_change
+              }
+
+            : (
+                regionalMovement.length
+                    ? {
+                        name:
+                            regionalMovement[0].region,
+
+                        change:
+                            regionalMovement[0].revenue_change
+                      }
+
+                    : null
+            );
+
+
+    /*
+     * LEADING PRODUCT
+     */
+
+    const topProduct =
+        driverSummary.largest_product
+            ? {
+                name:
+                    driverSummary.largest_product,
+
+                change:
+                    driverSummary.largest_product_change
+              }
+
+            : (
+                productMovement.length
+                    ? {
+                        name:
+                            productMovement[0].product,
+
+                        change:
+                            productMovement[0].revenue_change
+                      }
+
+                    : null
+            );
+
+
+    /*
+     * REVENUE CHANGE
+     */
+
+    const revenueChange =
+        Number(
+            comparison.revenue_change_percent || 0
+        );
+
+
+    /*
+     * INVENTORY RISKS
+     *
+     * These are the actual low-stock items
+     * returned by the API.
+     */
+
+    const inventoryHTML =
+        lowStockItems.length
+
+            ? lowStockItems.map(
+                item => {
+
+                    const stock =
+                        Number(
+                            item.stock || 0
+                        );
+
+
+                    const reorder =
+                        Number(
+                            item.reorder_level || 0
+                        );
+
+
+                    const gap =
+                        Math.max(
+                            reorder - stock,
+                            0
+                        );
+
+
+                    return `
+
+                        <div class="comparison-driver">
+
+                            <div>
+
+                                <strong>
+                                    ${escapeHTML(
+                                        item.product ||
+                                        "Unknown product"
+                                    )}
+                                </strong>
+
+                                <span class="muted">
+
+                                    Stock:
+                                    ${stock}
+
+                                    · Reorder level:
+                                    ${reorder}
+
+                                </span>
+
+                            </div>
+
+
+                            <div>
+
+                                <strong>
+
+                                    ${gap}
+                                    units below reorder
+
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+                }
+            ).join("")
+
+            :
+
+            `
+
+                <p class="muted">
+
+                    No products are currently
+                    below their reorder level.
+
+                </p>
+
+            `;
+
+
+    /*
+     * INVENTORY INTELLIGENCE
+     *
+     * IMPORTANT:
+     * API field is recommended_quantity,
+     * not recommended_restock.
+     */
+
+    const intelligenceHTML =
+        inventoryIntelligence.length
+
+            ? inventoryIntelligence.map(
+                item => {
+
+                    const daysOfStock =
+                        Number(
+                            item.days_of_stock || 0
+                        );
+
+
+                    const recommendedQuantity =
+                        Number(
+                            item.recommended_quantity || 0
+                        );
+
+
+                    return `
+
+                        <div class="comparison-driver">
+
+                            <div>
+
+                                <strong>
+
+                                    ${escapeHTML(
+                                        item.product ||
+                                        "Unknown product"
+                                    )}
+
+                                </strong>
+
+
+                                <span class="muted">
+
+                                    ${daysOfStock.toFixed(2)}
+                                    days of stock remaining
+
+                                    · Priority:
+                                    ${escapeHTML(
+                                        item.priority ||
+                                        "N/A"
+                                    )}
+
+                                </span>
+
+                            </div>
+
+
+                            <div>
+
+                                <strong>
+
+                                    Restock
+                                    ${recommendedQuantity.toLocaleString()}
+
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+                }
+            ).join("")
+
+            :
+
+            `
+
+                <p class="muted">
+
+                    No inventory intelligence is
+                    available for the selected period.
+
+                </p>
+
+            `;
+
+
+    /*
+     * FINAL DIAGNOSIS UI
+     */
 
     element.innerHTML = `
 
         <div class="diagnosis-grid">
 
+
             <div class="signal">
 
                 <b>
-                    Investigation
+                    Business Event
                 </b>
 
+
                 <p>
-                    ${data.investigation}
+
+                    ${escapeHTML(
+                        businessDriver
+                    )}
+
                 </p>
 
             </div>
@@ -790,18 +1646,39 @@ function diagnosis(data) {
             <div class="signal">
 
                 <b>
-                    Inventory Risks
+                    Leading Product
                 </b>
+
 
                 <p>
 
                     ${
-                        data.inventory_risks
-                            ?.length || 0
+                        topProduct
+                            ? escapeHTML(
+                                topProduct.name
+                            )
+                            : "N/A"
                     }
 
-                    products currently require
-                    attention.
+
+                    ${
+                        topProduct &&
+                        topProduct.change !==
+                        undefined
+
+                            ? `
+
+                                ·
+
+                                ${money(
+                                    topProduct.change
+                                )}
+
+                              `
+
+                            : ""
+
+                    }
 
                 </p>
 
@@ -814,23 +1691,203 @@ function diagnosis(data) {
                     Leading Region
                 </b>
 
+
                 <p>
 
                     ${
                         topRegion
-                            ? topRegion[0]
+                            ? escapeHTML(
+                                topRegion.name
+                            )
                             : "N/A"
                     }
 
-                    ·
 
                     ${
-                        topRegion
-                            ? money(topRegion[1])
-                            : "₹0"
+                        topRegion &&
+                        topRegion.change !==
+                        undefined
+
+                            ? `
+
+                                ·
+
+                                ${money(
+                                    topRegion.change
+                                )}
+
+                              `
+
+                            : ""
+
                     }
 
                 </p>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="signal">
+
+            <b>
+                Key Business Drivers
+            </b>
+
+
+            <div class="comparison-driver-list">
+
+
+                <div class="comparison-driver">
+
+                    <div>
+
+                        <strong>
+                            Revenue
+                        </strong>
+
+
+                        <span class="muted">
+
+                            Change compared
+                            with previous period
+
+                        </span>
+
+                    </div>
+
+
+                    <strong>
+
+                        ${revenueChange >= 0 ? "+" : ""}${revenueChange.toFixed(2)}%
+
+                    </strong>
+
+                </div>
+
+
+                <div class="comparison-driver">
+
+                    <div>
+
+                        <strong>
+                            Units Sold
+                        </strong>
+
+
+                        <span class="muted">
+
+                            Current period
+
+                        </span>
+
+                    </div>
+
+
+                    <strong>
+
+                        ${Number(
+                            overview.units || 0
+                        ).toLocaleString()}
+
+                    </strong>
+
+                </div>
+
+
+                <div class="comparison-driver">
+
+                    <div>
+
+                        <strong>
+                            Orders
+                        </strong>
+
+
+                        <span class="muted">
+
+                            Current period
+
+                        </span>
+
+                    </div>
+
+
+                    <strong>
+
+                        ${Number(
+                            overview.orders || 0
+                        ).toLocaleString()}
+
+                    </strong>
+
+                </div>
+
+
+                <div class="comparison-driver">
+
+                    <div>
+
+                        <strong>
+                            Profit
+                        </strong>
+
+
+                        <span class="muted">
+
+                            Current period
+
+                        </span>
+
+                    </div>
+
+
+                    <strong>
+
+                        ${money(
+                            overview.profit || 0
+                        )}
+
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <div class="signal">
+
+            <b>
+                Inventory Risks
+            </b>
+
+
+            <p>
+
+                ${
+                    lowStockItems.length
+                }
+
+                product${
+                    lowStockItems.length === 1
+                        ? ""
+                        : "s"
+                }
+
+                currently below their
+                reorder level.
+
+            </p>
+
+
+            <div class="comparison-driver-list">
+
+                ${inventoryHTML}
 
             </div>
 
@@ -843,10 +1900,186 @@ function diagnosis(data) {
                 Inventory Intelligence
             </b>
 
+
             <p>
+
                 NEXORAAI is using recent demand,
                 stock coverage and reorder levels
-                to prioritize inventory risks.
+                to prioritize inventory actions.
+
+            </p>
+
+
+            <div class="comparison-driver-list">
+
+                ${intelligenceHTML}
+
+            </div>
+
+        </div>
+
+
+        <div class="signal">
+
+            <b>
+                Supporting Evidence
+            </b>
+
+
+            <div class="comparison-driver-list">
+
+
+                <div class="comparison-driver">
+
+                    <div>
+
+                        <strong>
+                            Orders
+                        </strong>
+
+
+                        <span class="muted">
+
+                            Cancellation rate
+
+                        </span>
+
+                    </div>
+
+
+                    <strong>
+
+                        ${Number(
+                            orderEvidence.cancellation_rate || 0
+                        ).toFixed(2)}%
+
+                    </strong>
+
+                </div>
+
+
+                <div class="comparison-driver">
+
+                    <div>
+
+                        <strong>
+                            Customers
+                        </strong>
+
+
+                        <span class="muted">
+
+                            Customers in selected period
+
+                        </span>
+
+                    </div>
+
+
+                    <strong>
+
+                        ${Number(
+                            customerEvidence.customers ||
+                            overview.customers ||
+                            0
+                        ).toLocaleString()}
+
+                    </strong>
+
+                </div>
+
+
+                <div class="comparison-driver">
+
+                    <div>
+
+                        <strong>
+                            Marketing
+                        </strong>
+
+
+                        <span class="muted">
+
+                            Conversion rate
+
+                        </span>
+
+                    </div>
+
+
+                    <strong>
+
+                        ${Number(
+                            marketingEvidence.conversion_rate || 0
+                        ).toFixed(2)}%
+
+                    </strong>
+
+                </div>
+
+
+                <div class="comparison-driver">
+
+                    <div>
+
+                        <strong>
+                            Finance
+                        </strong>
+
+
+                        <span class="muted">
+
+                            Profit margin
+
+                        </span>
+
+                    </div>
+
+
+                    <strong>
+
+                        ${
+                            Number(
+                                financeEvidence.revenue || 0
+                            ) > 0
+
+                                ? (
+                                    Number(
+                                        financeEvidence.profit || 0
+                                    ) /
+                                    Number(
+                                        financeEvidence.revenue || 0
+                                    ) *
+                                    100
+                                ).toFixed(2)
+
+                                : "0.00"
+                        }%
+
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <div class="signal">
+
+            <b>
+                Investigation
+            </b>
+
+
+            <p>
+
+                ${
+                    data.investigation ||
+                    "NEXORAAI has collected sales, order, customer, inventory, marketing and finance evidence for the selected period."
+                }
+
             </p>
 
         </div>
@@ -854,7 +2087,6 @@ function diagnosis(data) {
     `;
 
 }
-
 
 /* =========================================================
    AUTONOMOUS OPERATIONS
@@ -876,6 +2108,7 @@ function operationStatusLabel(status) {
 
     };
 
+
     return labels[status] ||
         String(status || "").toUpperCase();
 
@@ -895,6 +2128,7 @@ function getVerificationData(item) {
 
     if (!item.verification)
         return null;
+
 
     try {
 
@@ -924,6 +2158,7 @@ function renderOperationResult(item) {
 
     const verification =
         getVerificationData(item);
+
 
     if (!verification)
         return "";
@@ -1090,33 +2325,42 @@ function renderOperationCard(
     const status =
         item.status || "unknown";
 
+
     const risk =
         operationRiskLabel(
             item.risk
         );
 
+
     const payload =
         item.payload || {};
+
 
     const isPending =
         status === "pending_approval";
 
+
     const isApproved =
         status === "approved";
+
 
     const showProposal =
         options.showProposal !== false;
 
+
     const showResult =
         options.showResult !== false;
 
+
     const showActions =
         options.showActions !== false;
+
 
     const resultHTML =
         showResult
             ? renderOperationResult(item)
             : "";
+
 
     return `
 
@@ -1233,7 +2477,6 @@ function renderOperationCard(
 
 /* =========================================================
    AUTONOMOUS OPERATIONS
-   FINAL INFORMATION ARCHITECTURE
 ========================================================= */
 
 function operations(data) {
@@ -1242,6 +2485,7 @@ function operations(data) {
         document.querySelector(
             "#operations-content"
         );
+
 
     if (!element)
         return;
@@ -1262,12 +2506,6 @@ function operations(data) {
     }
 
 
-    /*
-       ACTIVE DECISIONS
-       ----------------
-       Only operations that can still be acted upon.
-    */
-
     const active =
         data.filter(
             item =>
@@ -1276,26 +2514,12 @@ function operations(data) {
         );
 
 
-    /*
-       COMPLETED OPERATIONS
-       --------------------
-       Successfully executed and verified actions.
-    */
-
     const completed =
         data.filter(
             item =>
                 item.status === "completed"
         );
 
-
-    /*
-       HISTORY
-       -------
-       Rejected and failed operations remain visible
-       for traceability, but are not presented as
-       current business decisions.
-    */
 
     const history =
         data.filter(
@@ -1307,10 +2531,6 @@ function operations(data) {
 
     let html = "";
 
-
-    /* =====================================================
-       ACTIVE DECISIONS
-    ===================================================== */
 
     html += `
 
@@ -1392,10 +2612,6 @@ function operations(data) {
     `;
 
 
-    /* =====================================================
-       COMPLETED OPERATIONS
-    ===================================================== */
-
     html += `
 
         <div class="operations-group">
@@ -1458,10 +2674,6 @@ function operations(data) {
 
     `;
 
-
-    /* =====================================================
-       OPERATION HISTORY
-    ===================================================== */
 
     html += `
 
@@ -1548,6 +2760,7 @@ function commandCenter(
             "command-summary"
         );
 
+
     const actions =
         document.getElementById(
             "command-actions"
@@ -1573,9 +2786,9 @@ function commandCenter(
 
 
     const inventoryRisks =
+        diagnosisData.inventory_risks ||
         diagnosisData.inventory_intelligence ||
         [];
-
 
     const criticalRisks =
         inventoryRisks
@@ -1621,12 +2834,12 @@ function commandCenter(
                 <div>
 
                     <h3>
-                        Business is being actively monitored
+                        NEXORAAI is actively monitoring your business.
                     </h3>
 
                     <p>
 
-                        Revenue is currently
+                        Current business performance shows revenue is
 
                         <strong>
                             ${
@@ -2069,8 +3282,10 @@ async function approve(id) {
                 }
             );
 
+
         if (!response.ok)
             throw Error(await response.text());
+
 
         await refreshAll();
 
@@ -2098,8 +3313,10 @@ async function reject(id) {
                 }
             );
 
+
         if (!response.ok)
             throw Error(await response.text());
+
 
         await refreshAll();
 
@@ -2127,8 +3344,10 @@ async function executeOp(id) {
                 }
             );
 
+
         if (!response.ok)
             throw Error(await response.text());
+
 
         await refreshAll();
 
@@ -2410,7 +3629,9 @@ function formatComparisonChange(value) {
 
     }
 
+
     value = Number(value);
+
 
     if (value > 0) {
 
@@ -2420,6 +3641,7 @@ function formatComparisonChange(value) {
 
     }
 
+
     if (value < 0) {
 
         return `
@@ -2427,6 +3649,7 @@ function formatComparisonChange(value) {
         `;
 
     }
+
 
     return "→ 0.00%";
 
@@ -2437,11 +3660,14 @@ function comparisonDirection(value) {
 
     value = Number(value || 0);
 
+
     if (value > 0)
         return "increase";
 
+
     if (value < 0)
         return "decrease";
+
 
     return "neutral";
 
@@ -2527,6 +3753,7 @@ function renderProductMovement(data) {
 
     }
 
+
     return data
         .slice()
         .sort(
@@ -2546,8 +3773,10 @@ function renderProductMovement(data) {
                     item.revenue_change || 0
                 );
 
+
             const changePercent =
                 item.revenue_change_percent;
+
 
             const arrow =
                 change > 0
@@ -2555,6 +3784,7 @@ function renderProductMovement(data) {
                     : change < 0
                         ? "↓"
                         : "→";
+
 
             return `
 
@@ -2638,6 +3868,7 @@ function renderRegionalMovement(data) {
 
     }
 
+
     return data
         .slice()
         .sort(
@@ -2656,8 +3887,10 @@ function renderRegionalMovement(data) {
                     item.revenue_change || 0
                 );
 
+
             const changePercent =
                 item.revenue_change_percent;
+
 
             const arrow =
                 change > 0
@@ -2665,6 +3898,7 @@ function renderRegionalMovement(data) {
                     : change < 0
                         ? "↓"
                         : "→";
+
 
             return `
 
@@ -3134,7 +4368,18 @@ async function initialize() {
 }
 
 
-initialize();
+/* =========================================================
+   STARTUP
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        setupOnboarding();
+
+    }
+);
 
 
 /* =========================================================
@@ -3142,6 +4387,25 @@ initialize();
 ========================================================= */
 
 setInterval(
-    refreshAll,
+    () => {
+
+        const application =
+            document.querySelector(
+                "#application"
+            );
+
+
+        if (
+            application &&
+            application.classList.contains(
+                "application-visible"
+            )
+        ) {
+
+            refreshAll();
+
+        }
+
+    },
     60000
 );
